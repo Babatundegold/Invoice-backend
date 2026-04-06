@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class PaymentService {
 
-    private final String PAYSTACK_SECRET = "YOUR_PAYSTACK_SECRET_KEY";
+    private final String PAYSTACK_SECRET = "pk_test_552540ea76c21d9c7882172a5aa18a6e85d44340";
 
     public String initializePayment(String email, double amount) {
 
