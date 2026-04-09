@@ -11,8 +11,8 @@ import java.time.LocalDate;
 
 @Document(collection = "users")
 @Data
-@Builder // This creates the .builder() method
-@AllArgsConstructor // Required by @Builder
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
@@ -23,9 +23,11 @@ public class User {
     private String email;
     private String password;
 
-    private String role = "USER";   // USER / ADMIN
-    private String plan = "FREE";   // FREE / PREMIUM
+    @Builder.Default
+    private String role = "USER";   // Now the builder will use "USER" by default
+
+    @Builder.Default
+    private String plan = "FREE";   // Now the builder will use "FREE" by default
 
     private LocalDate createdAt;
 }
-
