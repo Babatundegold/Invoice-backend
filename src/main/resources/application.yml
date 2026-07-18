@@ -1,0 +1,67 @@
+server:
+  # Railway assigns a dynamic port via the PORT env var - falls back to 8080 for local dev
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: invoice-saas-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/invoice_saas}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:sodiq123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        # This property is optional with Hibernate 6, but it's okay to keep it.
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:CHANGE_THIS_TO_A_LONG_RANDOM_SECRET_KEY_MIN_256_BITS}
+    expiration-ms: 86400000
+
+  file-storage:
+    upload-dir: ./uploads
+    pdf-dir: ./generated-pdfs
+
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:*}
+
+  frontend:
+    base-url: ${APP_FRONTEND_BASE_URL:http://localhost:3000}
+
+  backend:
+    base-url: ${APP_BACKEND_BASE_URL:http://localhost:8080}
+
+  paystack:
+    secret-key: ${PAYSTACK_SECRET_KEY:sk_test_xxxxxxxxxxxxxxxxxxxx}
+    public-key: ${PAYSTACK_PUBLIC_KEY:pk_test_xxxxxxxxxxxxxxxxxxxx}
+    base-url: https://api.paystack.co
+    premium-monthly-plan-code: ${PAYSTACK_PREMIUM_PLAN:PLN_xxxxxxxxxxxx}
+
+  telegram:
+    bot-token: ${TELEGRAM_BOT_TOKEN:}

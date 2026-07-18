@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; color: #222; font-size: 13px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+        .logo { max-height: 70px; max-width: 200px; }
+        .business-name { font-size: 20px; font-weight: bold; }
+        .invoice-title { font-size: 26px; color: #444; text-align: right; }
+        .meta { text-align: right; font-size: 12px; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #f4f4f4; text-align: left; padding: 8px; font-size: 12px; border-bottom: 2px solid #ddd; }
+        td { padding: 8px; border-bottom: 1px solid #eee; font-size: 12px; }
+        .totals { width: 300px; margin-left: auto; margin-top: 20px; }
+        .totals td { border: none; padding: 4px 8px; }
+        .totals .grand-total { font-weight: bold; font-size: 15px; border-top: 2px solid #333; }
+        .footer { margin-top: 40px; font-size: 11px; color: #888; }
+        .status { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <!-- Logo is OPTIONAL: only rendered if company uploaded one, else fall back to business name text -->
+            <img th:if="${logoUrl != null}" th:src="${logoUrl}" class="logo"/>
+            <div class="business-name" th:text="${businessName}">Business Name</div>
+            <div th:text="${address}">Address</div>
+            <div th:text="${phone}">Phone</div>
+        </div>
+        <div>
+            <div class="invoice-title">INVOICE</div>
+            <div class="meta">
+                <div th:text="'#' + ${invoiceNumber}">#INV-0001</div>
+                <div th:text="'Issue date: ' + ${issueDate}">Issue date</div>
+                <div th:text="'Due date: ' + ${dueDate}">Due date</div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <strong>Bill to:</strong>
+        <div th:text="${clientName}">Client Name</div>
+        <div th:text="${clientEmail}">Client Email</div>
+        <div th:text="${clientAddress}">Client Address</div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Tax</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.description}">Item</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="${item.unitPrice}">0.00</td>
+            <td th:text="${item.taxRate} + '%'">0%</td>
+            <td th:text="${item.lineTotal}">0.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="totals">
+        <tr><td>Subtotal</td><td th:text="${currency} + ' ' + ${subtotal}">0.00</td></tr>
+        <tr><td>Tax</td><td th:text="${currency} + ' ' + ${taxAmount}">0.00</td></tr>
+        <tr class="grand-total"><td>Total</td><td th:text="${currency} + ' ' + ${total}">0.00</td></tr>
+        <tr><td>Amount Paid</td><td th:text="${currency} + ' ' + ${amountPaid}">0.00</td></tr>
+    </table>
+
+    <div class="footer">
+        <p th:if="${notes != null}" th:text="'Notes: ' + ${notes}">Notes</p>
+        <p th:if="${bankName != null}" th:text="'Pay to: ' + ${bankName} + ' - ' + ${bankAccountNumber} + ' (' + ${bankAccountName} + ')'">Bank details</p>
+        <p>Pay online: <span th:text="${publicPayUrl}">link</span></p>
+    </div>
+</body>
+</html>
